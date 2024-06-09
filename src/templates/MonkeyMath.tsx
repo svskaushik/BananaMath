@@ -57,10 +57,6 @@ export default function MonkeyMath() {
     }
   }
 
-  // useEffect(() => {
-  //   checkAnswer();
-  // }, [userInput]);
-
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     checkAnswer();
