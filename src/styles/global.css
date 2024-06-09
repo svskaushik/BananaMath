@@ -20,3 +20,26 @@ we still enforce color-scheme: dark, despite the user preference */
   }
 }
 
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@keyframes flash {
+  0% {opacity: 1;}
+  50% {opacity: 0.5;}
+  100% {opacity: 1;}
+}
+
+.flash-green {
+  animation: flash 1s;
+  background-color: green;
+}
+
+.flash-red {
+  animation: flash 1s;
+  background-color: red;
+}

@@ -40,7 +40,7 @@ export default function MonkeyMath() {
         break;
     }
 
-    setProblem(`What is ${num1} ${operator} ${num2}?`);
+    setProblem(`${num1} ${operator} ${num2}`);
     setUserInput('');
     setMessage('');
     setIsCorrect(null);
@@ -48,7 +48,6 @@ export default function MonkeyMath() {
 
   function checkAnswer() {
     const userAnswer = parseFloat(userInput);
-
     if (userAnswer === result) {
       setMessage('Correct!');
       setIsCorrect(true);
@@ -58,10 +57,14 @@ export default function MonkeyMath() {
     }
   }
 
+  // useEffect(() => {
+  //   checkAnswer();
+  // }, [userInput]);
+
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     checkAnswer();
-    promptMathProblem();
+    setTimeout(promptMathProblem, 300); // Wait 1 second before prompting a new problem
   }
 
   return (
@@ -81,7 +84,7 @@ export default function MonkeyMath() {
           <button className={TEXT_CLASS}>Settings</button>
         </div>
       </header>
-      <div className="flex min-h-full w-full max-w-3xl flex-col items-center rounded-lg bg-zinc-700 p-6 shadow-lg">
+      <div className="flex min-h-full w-full max-w-3xl flex-col items-center rounded-lg bg-zinc-700/30 p-6 shadow-lg">
         {/* <div className="flex justify-between items-center mb-4">
       <div className="flex space-x-2">
         <button className={BUTTON_CLASS}>Addition</button>
@@ -106,19 +109,20 @@ export default function MonkeyMath() {
                 setUserInput(e.target.value)
               }
               type="number"
-              className={`mb-4 w-80 rounded-md border-0 bg-zinc-600 bg-opacity-20 p-2 text-center`}
+              className={`flash mb-4 w-80 rounded-md border-0 bg-zinc-600/20 p-2 text-center focus:outline-none focus:ring-4 focus:ring-zinc-400/20 ${isCorrect === true ? 'animate-flash-green' : isCorrect === false ? 'animate-flash-red' : ''}`}
             />
             <div className="mb-6 flex space-x-10">
               <button
                 type="submit"
-                className="rounded bg-zinc-600 bg-opacity-20 px-4 py-2 font-bold text-white hover:bg-opacity-30"
+                // onClick={checkAnswer}
+                className="rounded bg-zinc-600/20 px-4 py-2 font-bold text-white hover:bg-opacity-30"
               >
                 Check Answer
               </button>
               <button
                 type="button"
                 onClick={promptMathProblem}
-                className="rounded bg-zinc-600 bg-opacity-20 px-4 py-2 font-bold text-white hover:bg-opacity-30"
+                className="rounded bg-zinc-600/20 px-4 py-2 font-bold text-white hover:bg-opacity-30"
               >
                 New Problem
               </button>
