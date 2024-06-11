@@ -20,9 +20,14 @@ export default function MonkeyMath() {
 
   // Function to prompt the user with a math problem
   function promptMathProblem() {
-    const num1 = getRandomNumber(1, 10);
+    let num1 = getRandomNumber(1, 10);
     const num2 = getRandomNumber(1, 10);
     const operator = ['+', '-', '*', '/'][getRandomNumber(0, 3)];
+
+    // If the operator is '/', adjust num1 and num2 to ensure the result is a whole number
+    if (operator === '/') {
+      num1 = num2 * getRandomNumber(1, 10);
+    }
 
     // eslint-disable-next-line default-case
     switch (operator) {
