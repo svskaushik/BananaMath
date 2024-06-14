@@ -17,6 +17,8 @@ export default function MonkeyMath() {
   const [timerEnded, setTimerEnded] = useState<boolean>(false);
   const [timeLeft, setTimeLeft] = useState<number>(10); // Start the timer at 10 seconds
   const [timerStarted, setTimerStarted] = useState<boolean>(false);
+  const [correctCount, setCorrectCount] = useState<number>(0);
+  const [totalCount, setTotalCount] = useState<number>(0);
   const inputRef = useRef(null);
 
   // Function to prompt the user with a math problem
@@ -57,6 +59,7 @@ export default function MonkeyMath() {
     if (userAnswer === result) {
       setMessage('Correct!');
       setIsCorrect(true);
+      setCorrectCount(correctCount + 1);
     } else {
       setMessage(`Incorrect! The correct answer is ${result}.`);
       setIsCorrect(false);
@@ -66,7 +69,8 @@ export default function MonkeyMath() {
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     checkAnswer();
-    setTimeout(promptMathProblem, 300); // Wait 1 second before prompting a new problem
+    setTotalCount(totalCount + 1);
+    setTimeout(promptMathProblem, 300); // Wait 0.3 s before prompting a new problem
   }
 
   // Populate the first problem when the component mounts
@@ -142,7 +146,17 @@ export default function MonkeyMath() {
         </div>
             </div> */}
           <div className="mb-6 text-center">
-            <p className="mb-5 text-2xl">{problem}</p>
+            <p className="mb-5 text-2xl" hidden={timerEnded}>
+              {problem}
+            </p>
+            <p
+              className="text-center text-2xl text-gray-700"
+              hidden={!timerEnded}
+            >
+              {totalCount > 0
+                ? `${((correctCount / totalCount) * 100).toFixed(2)}%`
+                : '0%'}
+            </p>
           </div>
           <div className="flex justify-center">
             <form onSubmit={handleSubmit}>
@@ -159,6 +173,7 @@ export default function MonkeyMath() {
                 className={`flash mb-4 w-80 rounded-md border-0 bg-zinc-600/20 p-2 text-center focus:outline-none focus:ring-4 focus:ring-zinc-400/20 ${isCorrect === true ? 'animate-flash-green' : isCorrect === false ? 'animate-flash-red' : ''}`}
                 disabled={timerEnded}
               />
+
               <div className="mb-6 flex justify-center space-x-10">
                 <button
                   type="button"
@@ -167,6 +182,7 @@ export default function MonkeyMath() {
                     setTimerStarted(false);
                     setTimeLeft(10); // Reset the timer to 10 seconds
                     setTimerEnded(false);
+                    setCorrectCount(0);
                     setTimeout(() => {
                       if (inputRef.current) {
                         (
