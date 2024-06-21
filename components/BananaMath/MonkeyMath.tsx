@@ -61,16 +61,17 @@ export default function MonkeyMath() {
       setMessage("Correct!");
       setIsCorrect(true);
       setCorrectCount(correctCount + 1);
+      setTotalCount(totalCount + 1);
     } else {
       setMessage(`Incorrect! The correct answer is ${result}.`);
       setIsCorrect(false);
+      setTotalCount(totalCount + 1);
     }
   }
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     checkAnswer();
-    setTotalCount(totalCount + 1);
     setTimeout(promptMathProblem, 300); // Wait 0.3 s before prompting a new problem
   }
 
@@ -99,6 +100,7 @@ export default function MonkeyMath() {
     // End the timer when timeLeft reaches 0
     if (timeLeft === 0) {
       setTimerEnded(true);
+      console.log(correctCount, totalCount);
     }
   }, [timerStarted, timeLeft]);
 
