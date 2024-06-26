@@ -1,6 +1,7 @@
 "use client";
 import type { ChangeEvent, FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
+import addAttempt from "@/app/server-actions/AddAttempt";
 
 // Function to generate random numbers between min and max (inclusive)
 function getRandomNumber(min: number, max: number): number {
@@ -100,7 +101,7 @@ export default function MonkeyMath() {
     // End the timer when timeLeft reaches 0
     if (timeLeft === 0) {
       setTimerEnded(true);
-      console.log(correctCount, totalCount);
+      addAttempt(correctCount, totalCount);
     }
   }, [timerStarted, timeLeft]);
 
@@ -157,6 +158,7 @@ export default function MonkeyMath() {
                   setTimeLeft(10); // Reset the timer to 10 seconds
                   setTimerEnded(false);
                   setCorrectCount(0);
+                  setTotalCount(0);
                   setTimeout(() => {
                     if (inputRef.current) {
                       (
