@@ -14,17 +14,18 @@ export default async function AttemptHistory() {
     return redirect("/login");
   }
 
-  let { data: entries, error } = await supabase
+  let { data: leaderboard, error } = await supabase
   .from('entries')
-  .select('*')
-  .eq('user_id', user?.id)
-  .order('created_at', { ascending: false })
+  .select("*")
+  .range(0, 9)
+  .order('percentage', { ascending: false })
+  
 
   //console.log("Entries:",entries, error);
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2">
-            <h1 className="text-2xl font-bold mb-5">Attempts</h1>
+            <h1 className="text-2xl font-bold mb-5">Leaderboard</h1>
             <div className="overflow-x-auto">
                 <div className="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
                     <table className="min-w-full">
@@ -37,11 +38,11 @@ export default async function AttemptHistory() {
                             </tr>
                         </thead>
                         <tbody className="bg-white">
-                            {entries?.map((entry, index) => {
+                            {leaderboard?.map((entry, index) => {
                                 return (
                                     <tr key={index}>
                                         <td className="px-6 py-4 whitespace-no-wrap border-b text-stone-900 border-gray-200">{index + 1}</td>
-                                        <td className="px-6 py-4 whitespace-no-wrap border-b text-stone-900 border-gray-200">{user.email}</td>
+                                        <td className="px-6 py-4 whitespace-no-wrap border-b text-stone-900 border-gray-200">{entry.user_email}</td>
                                         <td className="px-6 py-4 whitespace-no-wrap border-b text-stone-900 border-gray-200">{entry.percentage}%</td>
                                         <td className="px-6 py-4 whitespace-no-wrap border-b text-stone-900 border-gray-200">{new Date(entry.created_at).toLocaleDateString()}</td>
                                     </tr>

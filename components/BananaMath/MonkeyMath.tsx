@@ -1,7 +1,7 @@
 "use client";
 import type { ChangeEvent, FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
-import addAttempt from "@/app/server-actions/AddAttempt";
+import addAttempt from "@/app/server-actions/addAttempt";
 
 // Function to generate random numbers between min and max (inclusive)
 function getRandomNumber(min: number, max: number): number {

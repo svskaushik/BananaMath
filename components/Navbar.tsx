@@ -1,5 +1,5 @@
 // components/Navbar.tsx
-
+import Link from 'next/link';
 import React from 'react';
 import AuthButton from './AuthButton';
 
@@ -16,8 +16,8 @@ const Navbar = ({ isSupabaseConnected }: { isSupabaseConnected: boolean }) => (
             <span className="text-xl font-bold">BananaMath</span>
         </div>
         <div className="flex items-center space-x-4">
-            <button className={TEXT_CLASS}>Contact</button>
-            <button className={TEXT_CLASS}>Support</button>
+            <Link href="/attempts" className={TEXT_CLASS}>Attempts</Link>
+            <Link href="/leaderboard" className={TEXT_CLASS}>Leaderboard</Link>
             <button className={TEXT_CLASS}>Settings</button>
             {isSupabaseConnected && <AuthButton />}
         </div>

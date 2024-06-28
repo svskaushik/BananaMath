@@ -13,22 +13,26 @@ export default async function addAttempt(correct_count: number, total_count: num
   //console.log("User:", user?.id);
 
   if (!user) {
-    return redirect("/login");
+    return redirect("/");
   }
 
   const { data, error } = await supabase
   .from('entries')
   .insert([
-    { correct_count: correct_count, total_count: total_count, user_id: user?.id},
+    { correct_count: correct_count, 
+      total_count: total_count, 
+      user_id: user?.id, 
+      user_email: user?.email, 
+      percentage: ((correct_count / total_count)*100).toFixed(2)},
   ])
   .select()
 
-    if (error){
-    console.error('Error inserting data', error)
-    return;
-    }
+  if (error){
+  console.error('Error inserting data', error)
+  return;
+  }
 
-    revalidatePath('/leaderboard')
+  revalidatePath('/attempts')
 
-    return {message: 'Success'}
-    }
+  return {message: 'Success'}
+  }
