@@ -14,6 +14,22 @@ module.exports = {
           "background-hover": "hsl(var(--btn-background-hover))",
         },
       },
+      animation: {
+        'flash-green': 'flash-green 0.3s',
+        'flash-red': 'flash-red 0.3s',
+      },
+      keyframes: {
+        'flash-green': {
+          '0%': { backgroundColor: 'transparent' },
+          '50%': { backgroundColor: 'green' },
+          '100%': { backgroundColor: 'transparent' },
+        },
+        'flash-red': {
+          '0%': { backgroundColor: 'transparent' },
+          '50%': { backgroundColor: 'red' },
+          '100%': { backgroundColor: 'transparent' },
+        },
+      },
     },
   },
   plugins: [],
