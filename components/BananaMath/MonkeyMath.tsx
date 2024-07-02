@@ -1,6 +1,12 @@
+/**
+ * MonkeyMath component for generating math problems and checking user answers.
+ *
+ * @returns The MonkeyMath component.
+ */
 "use client";
 import type { ChangeEvent, FormEvent } from "react";
 import { useEffect, useRef, useState } from "react";
+import addAttempt from "@/app/server-actions/addAttempt";
 
 // Function to generate random numbers between min and max (inclusive)
 function getRandomNumber(min: number, max: number): number {
@@ -10,6 +16,7 @@ function getRandomNumber(min: number, max: number): number {
 const TEXT_CLASS = "text-zinc-400 hover:text-zinc-200";
 
 export default function MonkeyMath() {
+  // State variables
   const [problem, setProblem] = useState<string>("");
   const [userInput, setUserInput] = useState<string>("");
   const [message, setMessage] = useState<string>("");
@@ -33,7 +40,7 @@ export default function MonkeyMath() {
       num1 = num2 * getRandomNumber(1, 10);
     }
 
-    // eslint-disable-next-line default-case
+    // Calculate the result based on the operator
     switch (operator) {
       case "+":
         setResult(num1 + num2);
@@ -49,28 +56,32 @@ export default function MonkeyMath() {
         break;
     }
 
+    // Set the problem and reset user input, message, and correctness status
     setProblem(`${num1} ${operator} ${num2}`);
     setUserInput("");
     setMessage("");
     setIsCorrect(null);
   }
 
+  // Function to check the user's answer
   function checkAnswer() {
     const userAnswer = parseFloat(userInput);
     if (userAnswer === result) {
       setMessage("Correct!");
       setIsCorrect(true);
       setCorrectCount(correctCount + 1);
+      setTotalCount(totalCount + 1);
     } else {
       setMessage(`Incorrect! The correct answer is ${result}.`);
       setIsCorrect(false);
+      setTotalCount(totalCount + 1);
     }
   }
 
+  // Function to handle form submission
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     checkAnswer();
-    setTotalCount(totalCount + 1);
     setTimeout(promptMathProblem, 300); // Wait 0.3 s before prompting a new problem
   }
 
@@ -99,6 +110,7 @@ export default function MonkeyMath() {
     // End the timer when timeLeft reaches 0
     if (timeLeft === 0) {
       setTimerEnded(true);
+      addAttempt(correctCount, totalCount);
     }
   }, [timerStarted, timeLeft]);
 
@@ -155,6 +167,7 @@ export default function MonkeyMath() {
                   setTimeLeft(10); // Reset the timer to 10 seconds
                   setTimerEnded(false);
                   setCorrectCount(0);
+                  setTotalCount(0);
                   setTimeout(() => {
                     if (inputRef.current) {
                       (
